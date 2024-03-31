@@ -1,0 +1,39 @@
+#include <string>
+#include <fstream>
+using namespace std;
+
+//声明存储单词的链表
+struct Words {
+    string words = "NONE";
+    struct Words* next = NULL;
+};
+
+//遗忘单词表
+struct WordsForgetten {
+    string words = "NONE";
+    struct WordsForgetten* next = NULL;
+};
+
+//操作类
+class TableUtils {
+private:
+    //文件输入对象
+    ifstream file;
+    //总读入单词数量
+    int wordCout;
+    //遗忘单词数量
+    int numWordsForgetten;
+public:
+    //构造函数
+    TableUtils();
+
+    //单词表读入文件、写入链表、读取链表并显示操作
+    bool loadFile(char* filename); //完成
+    bool getBufferToTable(Words* head); //完成
+    bool readBufferFromTable(Words* read, WordsForgetten* headWF); //完成
+    //遗忘单词表创建、读取、移动、删除操作
+    bool createWFTable(string wordsProd, WordsForgetten* headWF, WordsForgetten* &end); //完成
+    bool readBuffeFromWFTable(WordsForgetten* read);
+    bool moveWordsInWFTable(WordsForgetten* wordsForgetten);
+    bool deleteSpecificWordsInWFTable(WordsForgetten* worldRemember);
+};
