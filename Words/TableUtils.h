@@ -24,8 +24,9 @@ private:
     //遗忘单词数量
     int numWordsForgetten;
 public:
-    //构造函数
+    //构造函数以及析构函数
     TableUtils();
+    ~TableUtils();
 
     //单词表读入文件、写入链表、读取链表并显示操作
     bool loadFile(char* filename); //完成

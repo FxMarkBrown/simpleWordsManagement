@@ -39,6 +39,7 @@ bool TableUtils::getBufferToTable(Words* head) {
         write = create;
     }
     cout << "很好，共读入 " << wordCout << " 个单词" << endl;
+    file.close();
 
     return true;
 }
@@ -142,7 +143,7 @@ bool TableUtils::readBuffeFromWFTable(WordsForgetten* read) {
     }
     //如果没有，继续递归此函数读取，直到全部记起来为止（想结束多半只能Alt F4了）
     else {
-        cout << "忘掉了" << numWordsForgetten++ << endl;
+        cout << "忘掉了" << numWordsForgetten++ <<" 个单词"<<endl;
         readBuffeFromWFTable(head);
     }
 
