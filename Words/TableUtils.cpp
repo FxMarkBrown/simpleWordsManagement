@@ -12,11 +12,6 @@ TableUtils::TableUtils() {
     headWF = NULL;
 }
 
-//exception还没学，暂时直接返回个true假装全部读取成功了:)
-bool TableUtils::loadFile(char* filename) {
-    file.open(filename);
-    return file.is_open();
-}
 
 bool TableUtils::getBufferToTable(Words* head) {
     //创建头链表
@@ -43,13 +38,12 @@ bool TableUtils::getBufferToTable(Words* head) {
     cout << "很好，共读入 " << wordCout << " 个单词" << endl;
     file.close();
 
-    //创建私有成员指针
-    TableUtils::head = head;
 
     return true;
 }
+//##############读取文件并创建链表##############
 
-//##单词链表读取
+//##############单词链表读取##############
 bool TableUtils::readBufferFromTable(Words* read, WordsForgetten* headWF) {
     //针对遗忘单词表添加单词使用的遗忘单词链表尾部指针（引用传递）
     WordsForgetten* endOfWF;
@@ -87,7 +81,9 @@ bool TableUtils::readBufferFromTable(Words* read, WordsForgetten* headWF) {
 
     return true;
 }
+//##############单词链表读取##############
 
+//##############遗忘表创建##############
 bool TableUtils::createWFTable(string wordsProd, WordsForgetten* headWF, WordsForgetten* &end) {
     //创建指针
     WordsForgetten* create;
@@ -123,7 +119,9 @@ bool TableUtils::createWFTable(string wordsProd, WordsForgetten* headWF, WordsFo
 
     return true;
 }
+//##############遗忘表创建##############
 
+//##############遗忘表读取##############
 bool TableUtils::readBuffeFromWFTable(WordsForgetten* read) {
     //留存读取位置的头部供再次读取使用
     WordsForgetten* headWF = read;
@@ -166,7 +164,9 @@ bool TableUtils::readBuffeFromWFTable(WordsForgetten* read) {
     //留着给exception
     return true;
 }
+//##############遗忘表读取##############
 
+//##############遗忘表单词删除##############
 bool TableUtils::deleteSpecificWordsInWFTable(WordsForgetten* &headWF, WordsForgetten* wordRemember) {
     //设置私有成员指针
     TableUtils::headWF = headWF;
@@ -201,6 +201,7 @@ bool TableUtils::deleteSpecificWordsInWFTable(WordsForgetten* &headWF, WordsForg
 
     return true;
 }
+//##############遗忘表单词删除##############
 
 bool TableUtils::moveWordsInWFTable(WordsForgetten* &headWF,WordsForgetten* wordForgetten) {
     //设置私有成员指针
@@ -232,7 +233,9 @@ bool TableUtils::moveWordsInWFTable(WordsForgetten* &headWF,WordsForgetten* word
 
     return true;
 }
+//##############遗忘表单词移动##############
 
+//##############析构##############
 /*
 所有操作进行完毕后，在对象声明周期结束前调用析构函数释放所有链表单元
 因为没学exception，所以上方不停的存储head和headWF，以保证一旦程序错误结束，析构函数可以最大
@@ -241,16 +244,18 @@ bool TableUtils::moveWordsInWFTable(WordsForgetten* &headWF,WordsForgetten* word
 TableUtils::~TableUtils() {
     //首先析构单词表
     Words* find = head;
-    while (head->next != NULL) {
-        //找到尾部
-        while (find->next != NULL) {
-            find = find->next;
+    if (head != NULL) {
+        while (head->next != NULL) {
+            //找到尾部
+            while (find->next != NULL) {
+                find = find->next;
+            }
+            //释放
+            delete find;
         }
-        //释放
-        delete find;
+        //最后删除头部
+        delete head;
     }
-    //最后删除头部
-    delete head;
 
     //再析构遗忘词表
     if (headWF != NULL) {
@@ -267,3 +272,4 @@ TableUtils::~TableUtils() {
         delete headWF;
     }
 }
+/*-----------------单词表操作-----------------*/

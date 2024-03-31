@@ -1,17 +1,13 @@
 ﻿#include <cstdlib>
 #include <iostream>
-#include <fstream>
-#include <sstream>
-#include <string>
-#include "TableUtils.h"
+#include "ApplicationEntry.h"
 
 using namespace std;
 
-//初始化单词表/遗忘词表指针
-struct Words* pt_w = NULL;
-struct WordsForgetten* pt_wf = NULL;
-
 int main() {
+    //重构中
+    //目标：分离程序启动与表读取以支持多个单词表
+    /*
     char fn[20];
     cout << "请输入文件名:";
     cin >> fn;
@@ -26,7 +22,11 @@ int main() {
     if (tu1.getBufferToTable(pt_w)) cout << "成功读入所有单词!" << endl;
 
     //读取单词展现在屏幕上并不停给你看，让你记住它
-    /*暂时没写*/
     if (tu1.readBufferFromTable(pt_w,pt_wf) == true) cout << "操作完成!" << endl;
     else exit(0);
+    */
+    
+    //启动程序实例
+    ApplicationEntry applicationEntry;
+    applicationEntry.startApplication();
 }
