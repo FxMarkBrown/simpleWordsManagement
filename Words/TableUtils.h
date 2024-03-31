@@ -23,6 +23,9 @@ private:
     int wordCout;
     //遗忘单词数量
     int numWordsForgetten;
+    //单词表指针成员，供最后析构函数释放链表使用
+    Words* head;
+    WordsForgetten* headWF;
 public:
     //构造函数以及析构函数
     TableUtils();
@@ -37,4 +40,5 @@ public:
     bool readBuffeFromWFTable(WordsForgetten* read); //完成
     bool moveWordsInWFTable(WordsForgetten* &headWF,WordsForgetten* wordForgetten); //完成
     bool deleteSpecificWordsInWFTable(WordsForgetten* &headWF,WordsForgetten* wordRemember); //完成
+    //内联
 };
