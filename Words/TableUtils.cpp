@@ -112,7 +112,7 @@ bool TableUtils::createWFTable(string wordsProd, WordsForgetten* headWF, WordsFo
 
 bool TableUtils::readBuffeFromWFTable(WordsForgetten* read) {
     //留存读取位置的头部供再次读取使用
-    WordsForgetten* head = read;
+    WordsForgetten* headWF = read;
     //读取遗忘单词表，逻辑与单词表类似
     char choiceWF;
     //归零遗忘单词数，防止函数递归后无限增加
@@ -124,12 +124,12 @@ bool TableUtils::readBuffeFromWFTable(WordsForgetten* read) {
         switch (choiceWF) {
             case 'y': {
                 //将此单词从表中删除,因为可能涉及到第一个单词，所以引用传递表头部head
-                deleteSpecificWordsInWFTable(head,read);
+                deleteSpecificWordsInWFTable(headWF,read);
                 continue;
             }
             case 'n': {
                 //将此单词提高优先级，即移动到链表最前方
-                moveWordsInWFTable(read);
+                moveWordsInWFTable(headWF,read);
                 numWordsForgetten++;
                 continue;
             }
@@ -137,14 +137,14 @@ bool TableUtils::readBuffeFromWFTable(WordsForgetten* read) {
     }
 
     //如果全记起来了
-    if (head == NULL) {
+    if (headWF == NULL) {
         cout << "恭喜你！全部过关！";
         exit(0);
     }
     //如果没有，继续递归此函数读取，直到全部记起来为止（想结束多半只能Alt F4了）
     else {
         cout << "忘掉了" << numWordsForgetten++ <<" 个单词"<<endl;
-        readBuffeFromWFTable(head);
+        readBuffeFromWFTable(headWF);
     }
 
     //留着给exception
@@ -179,6 +179,35 @@ bool TableUtils::deleteSpecificWordsInWFTable(WordsForgetten* &headWF, WordsForg
         find->next = wordRemember->next;
         delete wordRemember;
         return true;
+    }
+
+    return true;
+}
+
+bool TableUtils::moveWordsInWFTable(WordsForgetten* &headWF,WordsForgetten* wordForgetten) {
+    //如果第一个就妹记住,则不执行任何操作
+    //如果不是，则再分情况
+    if (wordForgetten != headWF) {
+        //首先找到上一单元
+        WordsForgetten* find = headWF;
+        while (find->next != wordForgetten) {
+            find = find->next;
+        }
+
+        //如果是尾部
+        if (wordForgetten->next == NULL) {
+            find->next = NULL;
+            wordForgetten->next = headWF;
+            headWF = wordForgetten;
+            return true;
+        }
+        //如果是中间单元
+        else {
+            find->next = wordForgetten->next;
+            wordForgetten->next = headWF;
+            headWF = wordForgetten;
+            return true;
+        }
     }
 
     return true;

@@ -34,7 +34,7 @@ public:
     bool readBufferFromTable(Words* read, WordsForgetten* headWF); //完成
     //遗忘单词表创建、读取、移动、删除操作
     bool createWFTable(string wordsProd, WordsForgetten* headWF, WordsForgetten* &end); //完成
-    bool readBuffeFromWFTable(WordsForgetten* read);
-    bool moveWordsInWFTable(WordsForgetten* wordsForgetten);
-    bool deleteSpecificWordsInWFTable(WordsForgetten* &headWF,WordsForgetten* wordRemember);
+    bool readBuffeFromWFTable(WordsForgetten* read); //完成
+    bool moveWordsInWFTable(WordsForgetten* &headWF,WordsForgetten* wordForgetten); //完成
+    bool deleteSpecificWordsInWFTable(WordsForgetten* &headWF,WordsForgetten* wordRemember); //完成
 };
