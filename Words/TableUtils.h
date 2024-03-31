@@ -35,5 +35,5 @@ public:
     bool createWFTable(string wordsProd, WordsForgetten* headWF, WordsForgetten* &end); //Íê³É
     bool readBuffeFromWFTable(WordsForgetten* read);
     bool moveWordsInWFTable(WordsForgetten* wordsForgetten);
-    bool deleteSpecificWordsInWFTable(WordsForgetten* worldRemember);
+    bool deleteSpecificWordsInWFTable(WordsForgetten* &headWF,WordsForgetten* wordRemember);
 };

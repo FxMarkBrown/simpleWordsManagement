@@ -122,8 +122,8 @@ bool TableUtils::readBuffeFromWFTable(WordsForgetten* read) {
         cin >> choiceWF;
         switch (choiceWF) {
             case 'y': {
-                //将此单词从表中删除
-                deleteSpecificWordsInWFTable(read);
+                //将此单词从表中删除,因为可能涉及到第一个单词，所以引用传递表头部head
+                deleteSpecificWordsInWFTable(head,read);
                 continue;
             }
             case 'n': {
@@ -150,3 +150,35 @@ bool TableUtils::readBuffeFromWFTable(WordsForgetten* read) {
     return true;
 }
 
+bool TableUtils::deleteSpecificWordsInWFTable(WordsForgetten* &headWF, WordsForgetten* wordRemember) {
+    //如果涉及到表头部单词的删除操作,则通过引用传递改变表的头部指针
+    if (wordRemember == headWF) {
+        headWF = headWF->next;
+        delete wordRemember;
+        return true;
+    }
+
+    //如果是链表中的非头部单元，则还要判断是否是尾部
+    //因为现在还妹学双向链表，所以为了找到上一个链表，暂时先遍历整个链表
+    
+    //寻找上一个单元
+    WordsForgetten* find = headWF;
+    while (find->next != wordRemember) {
+        find = find->next;
+    }
+    //操作完成后find即是WordRemember的上一单元
+    //如果是尾部
+    if (wordRemember->next == NULL) {
+        find->next = NULL;
+        delete wordRemember;
+        return true;
+    }
+    //如果是中间单元
+    else {
+        find->next = wordRemember->next;
+        delete wordRemember;
+        return true;
+    }
+
+    return true;
+}
