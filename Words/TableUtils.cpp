@@ -10,10 +10,11 @@ TableUtils::TableUtils() {
     numWordsForgetten = 0;
     head = NULL;
     headWF = NULL;
+    endWF = NULL;
 }
 
 
-bool TableUtils::getBufferToTable(Words* head) {
+void TableUtils::getBufferToTable() {
     //创建头链表
     head = new Words;
     //单词写入指针
@@ -39,14 +40,13 @@ bool TableUtils::getBufferToTable(Words* head) {
     file.close();
 
 
-    return true;
 }
 //##############读取文件并创建链表##############
 
 //##############单词链表读取##############
-bool TableUtils::readBufferFromTable(Words* read, WordsForgetten* headWF) {
-    //针对遗忘单词表添加单词使用的遗忘单词链表尾部指针（引用传递）
-    WordsForgetten* endOfWF;
+void TableUtils::readBufferFromTable() {
+    //读取指针
+    Words* read = head;
     //检索Words表
     char choice;
     while (read->next != NULL) {
@@ -60,7 +60,9 @@ bool TableUtils::readBufferFromTable(Words* read, WordsForgetten* headWF) {
             }
             case 'n': {
                  //存入,并开始下一个循环
-                createWFTable(read->words, headWF, endOfWF);
+                createWFTable(read->words);
+                numWordsForgetten++;
+                read = read->next;
                 continue;
             }
         }
@@ -69,22 +71,18 @@ bool TableUtils::readBufferFromTable(Words* read, WordsForgetten* headWF) {
     //开始检查WordsForgetten是否存在
     if (headWF == NULL) {
         cout << "恭喜你！全部过关！";
-        //设置私有成员指针，后交由析构函数释放链表
-        TableUtils::head = head;
         exit(0);
     }
     else {
-        //设置私有单词表指针
-        TableUtils::head = head;
-        readBuffeFromWFTable(headWF);
+        cout << "忘掉了 " << numWordsForgetten << " 个单词"<<endl;
+        readBuffeFromWFTable();
     }
 
-    return true;
 }
 //##############单词链表读取##############
 
 //##############遗忘表创建##############
-bool TableUtils::createWFTable(string wordsProd, WordsForgetten* headWF, WordsForgetten* &end) {
+void TableUtils::createWFTable(string wordsProd) {
     //创建指针
     WordsForgetten* create;
     //写入指针
@@ -94,60 +92,55 @@ bool TableUtils::createWFTable(string wordsProd, WordsForgetten* headWF, WordsFo
         headWF = new WordsForgetten;
         write = headWF;
         write->words = wordsProd;
-        //建立下一个
-        create = new WordsForgetten;
-        //链接
-        write->next = create;
         //设置尾部
-        end = create;
+        endWF = headWF;
     }
-    //如果已经建立，则根据尾部指针end来创建新表
+    //如果已经建立，创建新表，并设置新的尾部指针
     else {
-        write = end;
-        //填入单词
-        write->words = wordsProd;
         //创建新表
         create = new WordsForgetten;
+        //取现有尾部准备写入
+        write = endWF;
         //链接
         write->next = create;
+        //进入新表并填入单词
+        write = write->next;
+        write->words = wordsProd;
         //设置新尾部
-        end = create;
+        endWF = create;
     }
 
-    //设置私有成员指针
-    TableUtils::headWF = headWF;
 
-    return true;
 }
 //##############遗忘表创建##############
 
 //##############遗忘表读取##############
-bool TableUtils::readBuffeFromWFTable(WordsForgetten* read) {
-    //留存读取位置的头部供再次读取使用
-    WordsForgetten* headWF = read;
-    //设置私有成员指针
-    TableUtils::headWF = headWF;
+void TableUtils::readBuffeFromWFTable() {
+    //读入头部
+    WordsForgetten* read = headWF;
     //读取遗忘单词表，逻辑与单词表类似
     char choiceWF;
-    //归零遗忘单词数，防止函数递归后无限增加
-    numWordsForgetten = 0;
     //检索遗忘单词表
-    while (read->next != NULL) {
+    while (read != NULL) {
         cout << "还记得 " << read->words << " 吗？" << endl;
         cin >> choiceWF;
         switch (choiceWF) {
             case 'y': {
-                //将此单词从表中删除,因为可能涉及到第一个单词，所以引用传递表头部head
-                deleteSpecificWordsInWFTable(headWF,read);
+                //将此单词从表中删除
+                deleteSpecificWordsInWFTable(read);
+                //读入新头部
+                read = headWF;
                 continue;
             }
             case 'n': {
-                //将此单词提高优先级，即移动到链表最前方
-                moveWordsInWFTable(headWF,read);
-                numWordsForgetten++;
+                //将此单词降低优先级，即移动到链表最后方
+                moveWordsInWFTable(read);
+                read = headWF;
                 continue;
             }
         }
+
+        read = read->next;
     }
 
     //如果全记起来了
@@ -157,24 +150,20 @@ bool TableUtils::readBuffeFromWFTable(WordsForgetten* read) {
     }
     //如果没有，继续递归此函数读取，直到全部记起来为止（想结束多半只能Alt F4了）
     else {
-        cout << "忘掉了" << numWordsForgetten++ <<" 个单词"<<endl;
-        readBuffeFromWFTable(headWF);
+        cout << "忘掉了" << numWordsForgetten <<" 个单词"<<endl;
+        readBuffeFromWFTable();
     }
 
-    //留着给exception
-    return true;
 }
 //##############遗忘表读取##############
 
 //##############遗忘表单词删除##############
-bool TableUtils::deleteSpecificWordsInWFTable(WordsForgetten* &headWF, WordsForgetten* wordRemember) {
-    //设置私有成员指针
-    TableUtils::headWF = headWF;
-    //如果涉及到表头部单词的删除操作,则通过引用传递改变表的头部指针
+void TableUtils::deleteSpecificWordsInWFTable(WordsForgetten* wordRemember) {
+    //如果涉及到表头部单词的删除操作,则改变表的头部指针
     if (wordRemember == headWF) {
         headWF = headWF->next;
         delete wordRemember;
-        return true;
+        return ;
     }
 
     //如果是链表中的非头部单元，则还要判断是否是尾部
@@ -190,48 +179,49 @@ bool TableUtils::deleteSpecificWordsInWFTable(WordsForgetten* &headWF, WordsForg
     if (wordRemember->next == NULL) {
         find->next = NULL;
         delete wordRemember;
-        return true;
+        return ;
     }
     //如果是中间单元
     else {
         find->next = wordRemember->next;
         delete wordRemember;
-        return true;
+        return ;
     }
 
-    return true;
 }
 //##############遗忘表单词删除##############
 
-bool TableUtils::moveWordsInWFTable(WordsForgetten* &headWF,WordsForgetten* wordForgetten) {
-    //设置私有成员指针
-    TableUtils::headWF = headWF;
-    //如果第一个就妹记住,则不执行任何操作
-    //如果不是，则再分情况
-    if (wordForgetten != headWF) {
-        //首先找到上一单元
+void TableUtils::moveWordsInWFTable(WordsForgetten* wordForgetten) {
+    //如果第一个就没记住，则需要改变遗忘单词表头部指针
+    if (wordForgetten == headWF) {
+        //改变头部链表单元为原来的第二个单元
+        headWF = headWF->next;
+        //使原来的头部链表链接到最后，变为尾部链表
+        endWF->next = wordForgetten;
+        wordForgetten->next = NULL;
+        endWF = wordForgetten;
+
+        return;
+    }
+
+    //如果不是，则单词可能在尾部或中间，在尾部时不执行任何操作
+    else {
+        //如果在中间，则变为尾部单元
+        //寻找该单词的上一单元
         WordsForgetten* find = headWF;
         while (find->next != wordForgetten) {
             find = find->next;
         }
+        //使上一单元链接到该单词的下一单元
+        find->next = wordForgetten->next;
+        //改变尾部
+        endWF->next = wordForgetten;
+        wordForgetten->next = NULL;
+        endWF = wordForgetten;
 
-        //如果是尾部
-        if (wordForgetten->next == NULL) {
-            find->next = NULL;
-            wordForgetten->next = headWF;
-            headWF = wordForgetten;
-            return true;
-        }
-        //如果是中间单元
-        else {
-            find->next = wordForgetten->next;
-            wordForgetten->next = headWF;
-            headWF = wordForgetten;
-            return true;
-        }
+        return;
     }
 
-    return true;
 }
 //##############遗忘表单词移动##############
 

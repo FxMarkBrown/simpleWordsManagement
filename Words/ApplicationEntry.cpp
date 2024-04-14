@@ -6,14 +6,15 @@ using namespace std;
 
 //##############程序启动入口##############
 void ApplicationEntry::startApplication() {
-    //还没写
-
     //*调用成员tu的私有成员函数执行操作
+    //载入文件
+    loadFile();
+    tu.readBufferFromTable();
 }
 
 //##############读取文件并创建链表##############
 //exception还没学，暂时直接返回个true假装全部读取成功了:)
-bool ApplicationEntry::loadFile() {
+void ApplicationEntry::loadFile() {
     //****待重构：多个单词表支持（由对象组成的链表)****
     
     //打开文件
@@ -29,5 +30,5 @@ bool ApplicationEntry::loadFile() {
     }
 
     //读入链表
-    return tu.getBufferToTable(tu.head);
+    tu.getBufferToTable();
 }

@@ -1,3 +1,4 @@
+#pragma once
 #include <string>
 #include <fstream>
 using namespace std;
@@ -26,16 +27,18 @@ private:
     //单词表指针成员，供最后析构函数释放链表使用
     Words* head;
     WordsForgetten* headWF;
+    //遗忘单词表尾部指针，供创建遗忘链表单元/降低单元优先级时调用
+    WordsForgetten* endWF;
 
     //操作类函数
     //写入链表、读取链表并显示操作
-    bool getBufferToTable(Words* head); //完成
-    bool readBufferFromTable(Words* read, WordsForgetten* headWF); //完成
+    void getBufferToTable(); //完成
+    void readBufferFromTable(); //完成
     //遗忘单词表创建、读取、移动、删除操作
-    bool createWFTable(string wordsProd, WordsForgetten* headWF, WordsForgetten*& end); //完成
-    bool readBuffeFromWFTable(WordsForgetten* read); //完成
-    bool moveWordsInWFTable(WordsForgetten*& headWF, WordsForgetten* wordForgetten); //完成
-    bool deleteSpecificWordsInWFTable(WordsForgetten*& headWF, WordsForgetten* wordRemember); //完成
+    void createWFTable(string wordsProd); //完成
+    void readBuffeFromWFTable(); //完成
+    void moveWordsInWFTable(WordsForgetten* wordForgetten); //完成
+    void deleteSpecificWordsInWFTable(WordsForgetten* wordRemember); //完成
 
     //友元程序访问入口
     friend class ApplicationEntry;

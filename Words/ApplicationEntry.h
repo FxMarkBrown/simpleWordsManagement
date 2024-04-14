@@ -1,3 +1,4 @@
+#include "TableUtils.h"
 using namespace std;
 
 class ApplicationEntry {
@@ -8,5 +9,5 @@ public:
 	//控制程序开始
 	void startApplication();
 	//单词表读入文件
-	bool loadFile(); //完成
+	void loadFile(); //完成
 };
