@@ -192,14 +192,18 @@ void TableUtils::deleteSpecificWordsInWFTable(WordsForgetten* wordRemember) {
 //##############遗忘表单词删除##############
 
 void TableUtils::moveWordsInWFTable(WordsForgetten* wordForgetten) {
-    //如果第一个就没记住，则需要改变遗忘单词表头部指针
+    //如果第一个就没记住，在这个单词不是该表唯一一个单词的前提下，需要改变遗忘单词表头部指针
     if (wordForgetten == headWF) {
-        //改变头部链表单元为原来的第二个单元
-        headWF = headWF->next;
-        //使原来的头部链表链接到最后，变为尾部链表
-        endWF->next = wordForgetten;
-        wordForgetten->next = NULL;
-        endWF = wordForgetten;
+        //如果此单词是该表唯一一个单词，则返回
+        if (headWF->next == NULL) return;
+        else {
+            //改变头部链表单元为原来的第二个单元
+            headWF = headWF->next;
+            //使原来的头部链表链接到最后，变为尾部链表
+            endWF->next = wordForgetten;
+            wordForgetten->next = NULL;
+            endWF = wordForgetten;
+        }
 
         return;
     }
