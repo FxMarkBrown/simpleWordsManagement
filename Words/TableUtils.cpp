@@ -48,7 +48,7 @@ void TableUtils::getBufferToTable() {
             //读入每一行，若未碰到文件尾EOF，则一直循环读入
             while (getline(file, line))
             {
-                //初始化字符串提取流并按分隔符|提取每一行的两个单词
+                //初始化字符串提取流并按分隔符@提取每一行的两个单词
                 istringstream iss(line);
                 if (!(getline(iss, strA, '@') && getline(iss, strB))) {
                     // 如果格式不正确，则打印错误并跳过此行  
@@ -355,11 +355,6 @@ void TableUtils::moveWordsInWFTable(WordsForgetten* wordForgetten) {
 //##############遗忘表单词移动##############
 
 //##############析构##############
-/*
-所有操作进行完毕后，在对象声明周期结束前调用析构函数释放所有链表单元
-因为没学exception，所以上方不停的存储head和headWF，以保证一旦程序错误结束，析构函数可以最大
-限度析构所有链表，以减少内存中的垃圾
-*/
 TableUtils::~TableUtils() {
     //首先析构单词表
     Words* find = head;
