@@ -7,9 +7,26 @@ using namespace std;
 //##############程序启动入口##############
 void ApplicationEntry::startApplication() {
     //*调用成员tu的私有成员函数执行操作
-    //载入文件
-    loadFile();
-    tu.readBufferFromTable();
+    //选择模式
+    cout << "选择检查单词的模式 N（普通），D（听写）: ";
+    char key;
+    cin >> key;
+    switch (key) {
+        case 'N': {
+            //设置模式
+            tu.mode = 'N';
+            //载入文件
+            loadFile();
+            tu.readBufferFromTable();
+            break;
+        }
+        case 'D': {
+            tu.mode = 'D';
+            loadFile();
+            tu.readBufferFromTable();
+            break;
+        }
+    }
 }
 
 //##############读取文件并创建链表##############
