@@ -37,3 +37,8 @@
 /Words/Sample.txt
 /Words/IELTSWrite.txt
 /Words/Sample.txt
+/Words/ARM/Release
+/Words/x64/Release/Words.tlog
+/Words/x64/Release
+/x64/Release
+/.gitignore
