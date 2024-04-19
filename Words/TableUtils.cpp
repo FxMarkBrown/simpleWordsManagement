@@ -79,7 +79,9 @@ void TableUtils::getBufferToTable() {
 //##############读取文件并创建链表##############
 
 //##############单词链表读取##############
+
 void TableUtils::readBufferFromTable() {
+    cin.clear();
     //读取指针
     Words* read = head;
     //判断模式
@@ -112,7 +114,8 @@ void TableUtils::readBufferFromTable() {
         string choice;
         while (read->next != NULL) {
             cout << read->wordA << "你是否还记得? :";
-            cin >> choice;
+            cin.get();
+            getline(cin, choice);
             //回答正确，下一个循环
             if (choice == read->wordB) {
                 read = read->next;
@@ -212,6 +215,7 @@ void TableUtils::createWFTable(string wordsProdA, string wordsProdB) {
 
 //##############遗忘表读取##############
 void TableUtils::readBuffeFromWFTable() {
+    cin.clear();
     //读入头部
     WordsForgetten* read = headWF;
     //判断模式
@@ -248,7 +252,8 @@ void TableUtils::readBuffeFromWFTable() {
             //检索遗忘单词表
             while (read != NULL) {
                 cout << "还记得 " << read->wordforgettenA << " 吗？" << endl;
-                cin >> choiceWF;
+                cin.get();
+                getline(cin,choiceWF);
                 if (choiceWF == read->wordforgettenB) {
                     //将此单词从表中删除
                     deleteSpecificWordsInWFTable(read);
