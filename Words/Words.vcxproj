@@ -203,7 +203,6 @@
   <ItemGroup>
     <Text Include="Normal.txt" />
     <Text Include="SampleDictation.txt" />
-    <Text Include="IELTSWrite.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

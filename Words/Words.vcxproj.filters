@@ -34,7 +34,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="IELTSWrite.txt" />
     <Text Include="SampleDictation.txt" />
     <Text Include="Normal.txt" />
   </ItemGroup>

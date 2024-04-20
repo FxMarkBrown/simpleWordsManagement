@@ -50,7 +50,7 @@ void TableUtils::getBufferToTable() {
             {
                 //初始化字符串提取流并按分隔符@提取每一行的两个单词
                 istringstream iss(line);
-                if (!(getline(iss, strA, '@') && getline(iss, strB))) {
+                if (!(getline(iss, strA, '@') && getline(iss, strB, '|'))) {
                     // 如果格式不正确，则打印错误并跳过此行  
                     cerr << "格式错误的行: " << line << endl;
                     continue;
@@ -81,59 +81,53 @@ void TableUtils::getBufferToTable() {
 //##############单词链表读取##############
 
 void TableUtils::readBufferFromTable() {
-    cin.clear();
+    cin.get();
     //读取指针
     Words* read = head;
     //判断模式
     switch (mode) {
-    case 'N': {
-            //检索Words表
-            char choice;
-            while (read->next != NULL) {
-                cout << read->wordA << "你是否还记得? :";
-                cin >> choice;
-                switch (choice) {
-                    case 'y': {
-                        //下一链表，开始一个新循环
-                        read = read->next;
-                        continue;
-                    }
-                    case 'n': {
-                        //存入,并开始下一个循环
-                        createWFTable(read->wordA);
-                        numWordsForgetten++;
-                        read = read->next;
-                        continue;
-                    }
-                }
-            }
-            break;
-        }
-    case 'D': {
+    case 'N':
         //检索Words表
-        string choice;
+        char choice;
         while (read->next != NULL) {
             cout << read->wordA << "你是否还记得? :";
-            cin.get();
-            getline(cin, choice);
-            //回答正确，下一个循环
-            if (choice == read->wordB) {
+            cin >> choice;
+            switch (choice) {
+            case 'y':
+                //下一链表，开始一个新循环
                 read = read->next;
                 continue;
-            }
-            //错误
-            else {
+            case 'n':
                 //存入,并开始下一个循环
-                createWFTable(read->wordA,read->wordB);
+                createWFTable(read->wordA);
                 numWordsForgetten++;
                 read = read->next;
                 continue;
             }
         }
         break;
+    case 'D':
+        //检索Words表
+        string answer;
+        while (read->next != NULL) {
+            cout << read->wordA << "你是否还记得? :";
+            getline(cin, answer);
+            //回答正确，下一个循环
+            if (answer == read->wordB) {
+                read = read->next;
+                continue;
+            }
+            //错误
+            else {
+                //存入,并开始下一个循环
+                createWFTable(read->wordA, read->wordB);
+                numWordsForgetten++;
+                read = read->next;
+                continue;
+            }
         }
+        break;
     }
-
     //开始检查WordsForgetten是否存在
     if (headWF == NULL) {
         cout << "恭喜你！全部过关！";
@@ -215,12 +209,12 @@ void TableUtils::createWFTable(string wordsProdA, string wordsProdB) {
 
 //##############遗忘表读取##############
 void TableUtils::readBuffeFromWFTable() {
-    cin.clear();
+    cin.get();
     //读入头部
     WordsForgetten* read = headWF;
     //判断模式
     switch (mode) {
-        case 'N': {
+        case 'N':
         //读取遗忘单词表，逻辑与单词表类似
         char choiceWF;
         //检索遗忘单词表
@@ -228,33 +222,29 @@ void TableUtils::readBuffeFromWFTable() {
                 cout << "还记得 " << read->wordforgettenA << " 吗？" << endl;
                 cin >> choiceWF;
                 switch (choiceWF) {
-                    case 'y': {
-                        //将此单词从表中删除
-                        deleteSpecificWordsInWFTable(read);
-                        //读入新头部
-                        read = headWF;
-                        continue;
-                    }
-                    case 'n': {
-                        //将此单词降低优先级，即移动到链表最后方
-                        moveWordsInWFTable(read);
-                        read = headWF;
-                        continue;
-                    }
+                case 'y': 
+                    //将此单词从表中删除
+                    deleteSpecificWordsInWFTable(read);
+                    //读入新头部
+                    read = headWF;
+                    continue;
+                case 'n': 
+                    //将此单词降低优先级，即移动到链表最后方
+                    moveWordsInWFTable(read);
+                    read = headWF;
+                    continue;
                 }
                 read = read->next;
             }
         break;
-        }
-        case 'D': {
+        case 'D': 
             //读取遗忘单词表，逻辑与单词表类似
-            string choiceWF;
+            string answerWF;
             //检索遗忘单词表
             while (read != NULL) {
                 cout << "还记得 " << read->wordforgettenA << " 吗？" << endl;
-                cin.get();
-                getline(cin,choiceWF);
-                if (choiceWF == read->wordforgettenB) {
+                getline(cin,answerWF);
+                if (answerWF == read->wordforgettenB) {
                     //将此单词从表中删除
                     deleteSpecificWordsInWFTable(read);
                     //读入新头部
@@ -270,7 +260,6 @@ void TableUtils::readBuffeFromWFTable() {
                 read = read->next;
             }
             break;
-        }
     }
 
     //如果全记起来了

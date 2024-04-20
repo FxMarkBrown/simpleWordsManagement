@@ -1,2 +1,3 @@
-放弃1@abandon1
-放弃2@abandon2
+放弃1@abandon1|
+放弃2@abandon2|
+放弃3@abandon3|
