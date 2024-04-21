@@ -3,6 +3,7 @@
 #include <sstream>
 #include <fstream>
 #include <cstdio>
+#include <Windows.h>
 #include "TableUtils.h"
 
 using namespace std;
@@ -140,6 +141,7 @@ void TableUtils::readBufferfromTable() {
         cin >> choiceReview;
         switch (choiceReview) {
         case 1:
+            showAllAnswersinWFTable();
             readBuffefromWFTable();
             break;
         case 2:
@@ -152,7 +154,10 @@ void TableUtils::readBufferfromTable() {
 
 }
 //##############单词链表读取##############
+/*-----------------单词表操作-----------------*/
 
+
+/*----------------遗忘单词表操作---------------*/
 //##############遗忘表创建##############
 void TableUtils::createWFTable(string wordsProd) {
     //创建指针
@@ -280,6 +285,8 @@ void TableUtils::readBuffefromWFTable() {
     //如果没有
     else {
         cout << "忘掉了" << numWordsForgetten <<" 个单词"<<endl;
+        //显示所有忘掉单词的答案
+        showAllAnswersinWFTable();
         cout << "请选择：继续复习（1），下一次复习（2) : ";
         int choiceReviewWF;
         cin >> choiceReviewWF;
@@ -381,7 +388,7 @@ void TableUtils::moveWordsinWFTable(WordsForgetten* wordForgetten) {
 }
 //##############遗忘表单词移动##############
 
-//################遗忘表单词持久化操作################
+//---------------遗忘表单词持久化操作----------
 
 //##############遗忘表单词保存##############
 void TableUtils::saveBufferWFtoFile() {
@@ -460,7 +467,39 @@ bool TableUtils::hasFileWF() {
     return testFileWF.is_open();
 }
 
-//################遗忘表单词持久化操作################
+//---------------遗忘表单词持久化操作----------
+
+//##############显示遗忘单词表的所有答案##############
+void TableUtils::showAllAnswersinWFTable() {
+    system("cls");
+    cout << "现在将展示所有忘掉单词的答案，你将有10秒钟的时间来回顾每个单词";
+    WordsForgetten* read = headWF;
+    cout << "答案：" << endl;
+    switch (mode) {
+    case 'N':
+        while (read != NULL) {
+            cout << read->wordforgettenA<<endl;
+            //计时
+            Sleep(1000 * 10);
+            read = read->next;
+        }
+        break;
+    case 'D':
+        while (read != NULL) {
+            cout << read->wordforgettenA << " <------> " << read->wordforgettenB << endl;
+            //计时
+            Sleep(1000 * 10);
+            read = read->next;
+        }
+        break;
+    }
+
+    cout << "答案展现完毕" << endl;
+    system("cls");
+    cin.get();
+}
+
+/*----------------遗忘单词表操作---------------*/
 
 //##############析构##############
 TableUtils::~TableUtils() {
@@ -494,4 +533,3 @@ TableUtils::~TableUtils() {
         delete headWF;
     }
 }
-/*-----------------单词表操作-----------------*/

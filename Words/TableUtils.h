@@ -50,14 +50,15 @@ private:
     void readBuffefromWFTable(); //完成
     void moveWordsinWFTable(WordsForgetten* wordForgetten); //完成
     void deleteSpecificWordsinWFTable(WordsForgetten* wordRemember); //完成
+    void showAllAnswersinWFTable();
 
     //遗忘单词的持久化操作
     //保存遗忘单词表的单词到文件，读取遗忘单词到文件
     void saveBufferWFtoFile(); //完成
     void getBuffertoWFTable(); //完成
-    void deleteFileWF();
+    void deleteFileWF(); //完成
     //检查有无遗忘单词文件
-    bool hasFileWF();
+    bool hasFileWF(); //完成
 
     //友元程序访问入口
     friend class ApplicationEntry;
