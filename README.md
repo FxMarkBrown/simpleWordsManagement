@@ -19,3 +19,5 @@
 - 受限于采用的链表数据结构，无法做到随机读取（随机抽查单词）
 - 如果有打乱顺序的需求，一种曲线救国的方法是使用工具类网站按行打乱单词表文件
 - https://www.lddgo.net/string/text-shuffling-order
+## 流程
+![image](https://github.com/FxMarkBrown/simpleWordsManagement/blob/master/Flowchart.jpg)
