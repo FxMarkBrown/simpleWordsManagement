@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <fstream>
+#include <cstdio>
 #include "TableUtils.h"
 
 using namespace std;
@@ -16,7 +18,7 @@ TableUtils::TableUtils() {
 }
 
 
-void TableUtils::getBufferToTable() {
+void TableUtils::getBuffertoTable() {
     //创建头链表
     head = new Words;
     //单词写入指针
@@ -27,7 +29,7 @@ void TableUtils::getBufferToTable() {
         case 'N': {
             string str;
             //读入每一行，若未碰到文件尾EOF，则一直循环读入
-            while (getline(file, str))
+            while (getline(inputfile, str))
             {
                 //计数读到了几个单词
                 wordCout++;
@@ -46,7 +48,7 @@ void TableUtils::getBufferToTable() {
         case 'D': {
             string line,strA,strB;
             //读入每一行，若未碰到文件尾EOF，则一直循环读入
-            while (getline(file, line))
+            while (getline(inputfile, line))
             {
                 //初始化字符串提取流并按分隔符@提取每一行的两个单词
                 istringstream iss(line);
@@ -72,7 +74,7 @@ void TableUtils::getBufferToTable() {
         }
 
     }
-    file.close();
+    inputfile.close();
 
 
 }
@@ -80,8 +82,7 @@ void TableUtils::getBufferToTable() {
 
 //##############单词链表读取##############
 
-void TableUtils::readBufferFromTable() {
-    cin.get();
+void TableUtils::readBufferfromTable() {
     //读取指针
     Words* read = head;
     //判断模式
@@ -130,12 +131,23 @@ void TableUtils::readBufferFromTable() {
     }
     //开始检查WordsForgetten是否存在
     if (headWF == NULL) {
-        cout << "恭喜你！全部过关！";
-        exit(0);
+        cout << "恭喜你！全部过关！"<<endl;
     }
     else {
         cout << "忘掉了 " << numWordsForgetten << " 个单词"<<endl;
-        readBuffeFromWFTable();
+        cout << "请选择：现在复习（1），下一次复习（2) : ";
+        int choiceReview;
+        cin >> choiceReview;
+        switch (choiceReview) {
+        case 1:
+            readBuffefromWFTable();
+            break;
+        case 2:
+            //保存遗忘单词到文件
+            saveBufferWFtoFile();
+            exit(0);
+            break;
+        }
     }
 
 }
@@ -208,8 +220,7 @@ void TableUtils::createWFTable(string wordsProdA, string wordsProdB) {
 //##############遗忘表创建##############
 
 //##############遗忘表读取##############
-void TableUtils::readBuffeFromWFTable() {
-    cin.get();
+void TableUtils::readBuffefromWFTable() {
     //读入头部
     WordsForgetten* read = headWF;
     //判断模式
@@ -224,13 +235,13 @@ void TableUtils::readBuffeFromWFTable() {
                 switch (choiceWF) {
                 case 'y': 
                     //将此单词从表中删除
-                    deleteSpecificWordsInWFTable(read);
+                    deleteSpecificWordsinWFTable(read);
                     //读入新头部
                     read = headWF;
                     continue;
                 case 'n': 
                     //将此单词降低优先级，即移动到链表最后方
-                    moveWordsInWFTable(read);
+                    moveWordsinWFTable(read);
                     read = headWF;
                     continue;
                 }
@@ -246,14 +257,14 @@ void TableUtils::readBuffeFromWFTable() {
                 getline(cin,answerWF);
                 if (answerWF == read->wordforgettenB) {
                     //将此单词从表中删除
-                    deleteSpecificWordsInWFTable(read);
+                    deleteSpecificWordsinWFTable(read);
                     //读入新头部
                     read = headWF;
                     continue;
                 }
                 else {
                     //将此单词降低优先级，即移动到链表最后方
-                    moveWordsInWFTable(read);
+                    moveWordsinWFTable(read);
                     read = headWF;
                     continue;
                 }
@@ -264,20 +275,42 @@ void TableUtils::readBuffeFromWFTable() {
 
     //如果全记起来了
     if (headWF == NULL) {
-        cout << "恭喜你！全部过关！";
-        exit(0);
+        cout << "恭喜你！全部过关！"<<endl;
     }
-    //如果没有，继续递归此函数读取，直到全部记起来为止（想结束多半只能Alt F4了）
+    //如果没有
     else {
         cout << "忘掉了" << numWordsForgetten <<" 个单词"<<endl;
-        readBuffeFromWFTable();
+        cout << "请选择：继续复习（1），下一次复习（2) : ";
+        int choiceReviewWF;
+        cin >> choiceReviewWF;
+        switch (choiceReviewWF) {
+        case 1:
+            //继续递归此函数读取，直到全部记起来为止
+            readBuffefromWFTable();
+            break;
+        case 2:
+            //保存遗忘单词到文件
+            //如果已经有锁文件，则先删除锁文件
+            if(hasFileWF()){
+                deleteFileWF();
+                saveBufferWFtoFile();
+                cout << "本次检查完毕，程序退出" << endl;
+                exit(0);
+            }
+            else {
+                saveBufferWFtoFile();
+                cout << "本次检查完毕，程序退出" << endl;
+                exit(0);
+            }
+            break;
+        }
     }
 
 }
 //##############遗忘表读取##############
 
 //##############遗忘表单词删除##############
-void TableUtils::deleteSpecificWordsInWFTable(WordsForgetten* wordRemember) {
+void TableUtils::deleteSpecificWordsinWFTable(WordsForgetten* wordRemember) {
     //如果涉及到表头部单词的删除操作,则改变表的头部指针
     if (wordRemember == headWF) {
         headWF = headWF->next;
@@ -310,7 +343,7 @@ void TableUtils::deleteSpecificWordsInWFTable(WordsForgetten* wordRemember) {
 }
 //##############遗忘表单词删除##############
 
-void TableUtils::moveWordsInWFTable(WordsForgetten* wordForgetten) {
+void TableUtils::moveWordsinWFTable(WordsForgetten* wordForgetten) {
     //如果第一个就没记住，在这个单词不是该表唯一一个单词的前提下，需要改变遗忘单词表头部指针
     if (wordForgetten == headWF) {
         //如果此单词是该表唯一一个单词，则返回
@@ -347,6 +380,87 @@ void TableUtils::moveWordsInWFTable(WordsForgetten* wordForgetten) {
 
 }
 //##############遗忘表单词移动##############
+
+//################遗忘表单词持久化操作################
+
+//##############遗忘表单词保存##############
+void TableUtils::saveBufferWFtoFile() {
+    ofstream outputWFFile("wordsWF.lock");
+    if (outputWFFile.is_open()) {
+        //开始遍历遗忘单词表并将其写入文件
+        WordsForgetten* read = headWF;
+        while (read != NULL) {
+            if (mode == 'N') {
+                outputWFFile << read->wordforgettenA;
+           }
+            else if (mode == 'D') {
+                outputWFFile << read->wordforgettenA << '@' << read->wordforgettenB << '|' << endl;
+            }
+
+            read = read->next;
+        }
+
+        outputWFFile.close();
+    }
+}
+//##############遗忘表单词保存##############
+
+//##############遗忘表单词读取##############
+void TableUtils::getBuffertoWFTable() {
+    switch (mode) {
+    case 'N': {
+        string str;
+        //读入每一行，若未碰到文件尾EOF，则一直循环读入
+        while (getline(inputfile, str)){
+            createWFTable(str);
+            //计数读到了几个单词
+            wordCout++;
+        }
+        cout << "当前为普通模式，共读入 " << wordCout << " 个单词" << endl;
+        break;
+    }
+    case 'D': {
+        string line, strA, strB;
+        //读入每一行，若未碰到文件尾EOF，则一直循环读入
+        while (getline(inputfile, line))
+        {
+            //初始化字符串提取流并按分隔符@提取每一行的两个单词
+            istringstream iss(line);
+            if (!(getline(iss, strA, '@') && getline(iss, strB, '|'))) {
+                // 如果格式不正确，则打印错误并跳过此行  
+                cerr << "格式错误的行: " << line << endl;
+                continue;
+            }
+            createWFTable(strA, strB);
+            //计数读到了几个单词
+            wordCout++;
+        }
+        cout << "当前为听写模式，共读入 " << wordCout << " 个单词" << endl;
+        break;
+    }
+
+    }
+    inputfile.close();
+
+}
+//##############遗忘表单词读取##############
+
+//############遗忘单词锁文件删除#############
+void TableUtils::deleteFileWF() {
+    const char* ptFileWF = "wordsWF.lock";
+    if (remove(ptFileWF) != 0) {
+        cerr << "移除遗忘单词锁文件失败，请尝试手动删除wordsWF.lock文件";
+    }
+}
+//############遗忘单词锁文件删除#############
+
+//############遗忘单词锁文件检查#############
+bool TableUtils::hasFileWF() {
+    ifstream testFileWF("wordsWF.lock");
+    return testFileWF.is_open();
+}
+
+//################遗忘表单词持久化操作################
 
 //##############析构##############
 TableUtils::~TableUtils() {
