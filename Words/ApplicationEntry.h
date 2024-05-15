@@ -3,17 +3,19 @@ using namespace std;
 
 class ApplicationEntry {
 private:
-	//±í¹ÜÀí¶ÔÏó
+	//è¡¨ç®¡ç†å¯¹è±¡
 	TableUtils* tu;
 
-	//Ñ¡ÔñÄ£Ê½
+	//é€‰æ‹©æ¨¡å¼
 	void chooseMode();
+	//é€‰æ‹©å•è¯è¡¨ç­”æ¡ˆå¯¹ç…§
+	void chooseReference();
 
-	//¶ÁÈëµ¥´Ê±í/ÒÅÍüµ¥´Ê±íÎÄ¼ş
-	void loadFile(); //Íê³É
-	void loadWFFile(); //Íê³É
+	//è¯»å…¥å•è¯è¡¨/é—å¿˜å•è¯è¡¨æ–‡ä»¶
+	void loadFile(); //å®Œæˆ
+	void loadWFFile(); //å®Œæˆ
 
 public:
-	//¿ØÖÆ³ÌĞò¿ªÊ¼
+	//æ§åˆ¶ç¨‹åºå¼€å§‹
 	void startApplication();
 };

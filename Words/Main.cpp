@@ -1,4 +1,4 @@
-﻿#include "ApplicationEntry.h"
+#include "ApplicationEntry.h"
 
 int main() {
     //启动程序实例

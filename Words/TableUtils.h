@@ -4,66 +4,68 @@
 using namespace std;
 
 
-//ÆÕÍ¨Ä£Ê½ÏÂÖ»Ê¹ÓÃA£¬ÌıĞ´Ä£Ê½ÏÂÊ¹ÓÃAºÍB£¬ÆäÖĞB´¢´æ´ğ°¸
-//ÉùÃ÷´æ´¢µ¥´ÊµÄÁ´±í
+//æ™®é€šæ¨¡å¼ä¸‹åªä½¿ç”¨Aï¼Œå¬å†™æ¨¡å¼ä¸‹ä½¿ç”¨Aå’ŒBï¼Œå…¶ä¸­Bå‚¨å­˜ç­”æ¡ˆ
+//å£°æ˜å­˜å‚¨å•è¯çš„é“¾è¡¨
 struct Words {
     string wordA = "NONE";
     string wordB = "NONE";
     struct Words* next = NULL;
 };
 
-//ÒÅÍüµ¥´Ê±í
+//é—å¿˜å•è¯è¡¨
 struct WordsForgetten {
     string wordforgettenA = "NONE";
     string wordforgettenB = "NONE";
     struct WordsForgetten* next = NULL;
 };
 
-//²Ù×÷Àà
+//æ“ä½œç±»
 class TableUtils {
 private:
-    //ÎÄ¼şÊäÈë¶ÔÏó
+    //æ–‡ä»¶è¾“å…¥å¯¹è±¡
     ifstream inputfile;
-    //±í²Ù×÷Ä£Ê½£ºN£¨ÆÕÍ¨Ä£Ê½£©£¬D£¨ÌıĞ´Ä£Ê½£©
+    //è¡¨æ“ä½œæ¨¡å¼ï¼šNï¼ˆæ™®é€šæ¨¡å¼ï¼‰ï¼ŒDï¼ˆå¬å†™æ¨¡å¼ï¼‰
     char mode;
-    //×Ü¶ÁÈëµ¥´ÊÊıÁ¿
+    //è¡¨ç­”æ¡ˆå‚ç…§ï¼šfï¼ˆ@å‰æ–¹ä¸ºç­”æ¡ˆï¼‰ï¼Œbï¼ˆ@åæ–¹ä¸ºç­”æ¡ˆï¼‰
+    char ref;
+    //æ€»è¯»å…¥å•è¯æ•°é‡
     int wordCout;
-    //ÒÅÍüµ¥´ÊÊıÁ¿
+    //é—å¿˜å•è¯æ•°é‡
     int numWordsForgetten;
-    //µ¥´Ê±íÖ¸Õë³ÉÔ±£¬¹©×îºóÎö¹¹º¯ÊıÊÍ·ÅÁ´±íÊ¹ÓÃ
+    //å•è¯è¡¨æŒ‡é’ˆæˆå‘˜ï¼Œä¾›æœ€åææ„å‡½æ•°é‡Šæ”¾é“¾è¡¨ä½¿ç”¨
     Words* head;
     WordsForgetten* headWF;
-    //ÒÅÍüµ¥´Ê±íÎ²²¿Ö¸Õë£¬¹©´´½¨ÒÅÍüÁ´±íµ¥Ôª/½µµÍµ¥ÔªÓÅÏÈ¼¶Ê±µ÷ÓÃ
+    //é—å¿˜å•è¯è¡¨å°¾éƒ¨æŒ‡é’ˆï¼Œä¾›åˆ›å»ºé—å¿˜é“¾è¡¨å•å…ƒ/é™ä½å•å…ƒä¼˜å…ˆçº§æ—¶è°ƒç”¨
     WordsForgetten* endWF;
 
-    //²Ù×÷Ààº¯Êı
+    //æ“ä½œç±»å‡½æ•°
     
 
-    //Ğ´Èëµ¥´ÊÁ´±í¡¢¶ÁÈ¡Á´±í²¢ÏÔÊ¾²Ù×÷
-    void getBuffertoTable(); //Íê³É
-    void readBufferfromTable(); //Íê³É
+    //å†™å…¥å•è¯é“¾è¡¨ã€è¯»å–é“¾è¡¨å¹¶æ˜¾ç¤ºæ“ä½œ
+    void getBuffertoTable(); //å®Œæˆ
+    void readBufferfromTable(); //å®Œæˆ
 
-    //ÁÙÊ±»¯ÒÅÍüµ¥´Ê±í´´½¨¡¢¶ÁÈ¡¡¢ÒÆ¶¯¡¢É¾³ı²Ù×÷
-    //ÓÃÓÚÆÕÍ¨ºÍÌıĞ´Ä£Ê½ÏÂµÄÒÅÍü±í´´½¨º¯Êı
-    void createWFTable(string wordsProd); //Íê³É
-    void createWFTable(string wordsProdA, string wordsProdB); //Íê³É
-    void readBuffefromWFTable(); //Íê³É
-    void moveWordsinWFTable(WordsForgetten* wordForgetten); //Íê³É
-    void deleteSpecificWordsinWFTable(WordsForgetten* wordRemember); //Íê³É
+    //ä¸´æ—¶åŒ–é—å¿˜å•è¯è¡¨åˆ›å»ºã€è¯»å–ã€ç§»åŠ¨ã€åˆ é™¤æ“ä½œ
+    //ç”¨äºæ™®é€šå’Œå¬å†™æ¨¡å¼ä¸‹çš„é—å¿˜è¡¨åˆ›å»ºå‡½æ•°
+    void createWFTable(string wordsProd); //å®Œæˆ
+    void createWFTable(string wordsProdA, string wordsProdB); //å®Œæˆ
+    void readBuffefromWFTable(); //å®Œæˆ
+    void moveWordsinWFTable(WordsForgetten* wordForgetten); //å®Œæˆ
+    void deleteSpecificWordsinWFTable(WordsForgetten* wordRemember); //å®Œæˆ
     void showAllAnswersinWFTable();
 
-    //ÒÅÍüµ¥´ÊµÄ³Ö¾Ã»¯²Ù×÷
-    //±£´æÒÅÍüµ¥´Ê±íµÄµ¥´Êµ½ÎÄ¼ş£¬¶ÁÈ¡ÒÅÍüµ¥´Êµ½ÎÄ¼ş
-    void saveBufferWFtoFile(); //Íê³É
-    void getBuffertoWFTable(); //Íê³É
-    void deleteFileWF(); //Íê³É
-    //¼ì²éÓĞÎŞÒÅÍüµ¥´ÊÎÄ¼ş
-    bool hasFileWF(); //Íê³É
+    //é—å¿˜å•è¯çš„æŒä¹…åŒ–æ“ä½œ
+    //ä¿å­˜é—å¿˜å•è¯è¡¨çš„å•è¯åˆ°æ–‡ä»¶ï¼Œè¯»å–é—å¿˜å•è¯åˆ°æ–‡ä»¶
+    void saveBufferWFtoFile(); //å®Œæˆ
+    void getBuffertoWFTable(); //å®Œæˆ
+    void deleteFileWF(); //å®Œæˆ
+    //æ£€æŸ¥æœ‰æ— é—å¿˜å•è¯æ–‡ä»¶
+    bool hasFileWF(); //å®Œæˆ
 
-    //ÓÑÔª³ÌĞò·ÃÎÊÈë¿Ú
+    //å‹å…ƒç¨‹åºè®¿é—®å…¥å£
     friend class ApplicationEntry;
 public:
-    //¹¹Ôìº¯ÊıÒÔ¼°Îö¹¹º¯Êı
+    //æ„é€ å‡½æ•°ä»¥åŠææ„å‡½æ•°
     TableUtils();
     ~TableUtils();
 };

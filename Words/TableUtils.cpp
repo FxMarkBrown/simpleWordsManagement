@@ -8,8 +8,8 @@
 
 using namespace std;
 
-/*-----------------µ¥´Ê±í²Ù×÷-----------------*/
-//¸²Ğ´¹¹Ôìº¯Êı³õÊ¼»¯Ë½ÓĞ³ÉÔ±
+/*-----------------å•è¯è¡¨æ“ä½œ-----------------*/
+//è¦†å†™æ„é€ å‡½æ•°åˆå§‹åŒ–ç§æœ‰æˆå‘˜
 TableUtils::TableUtils() {
     wordCout = 0;
     numWordsForgetten = 0;
@@ -20,57 +20,63 @@ TableUtils::TableUtils() {
 
 
 void TableUtils::getBuffertoTable() {
-    //´´½¨Í·Á´±í
+    //åˆ›å»ºå¤´é“¾è¡¨
     head = new Words;
-    //µ¥´ÊĞ´ÈëÖ¸Õë
+    //å•è¯å†™å…¥æŒ‡é’ˆ
     Words* write = head;
-    //Á´±í´´½¨Ö¸Õë
+    //é“¾è¡¨åˆ›å»ºæŒ‡é’ˆ
     Words* create;
     switch (mode) {
         case 'N': {
             string str;
-            //¶ÁÈëÃ¿Ò»ĞĞ£¬ÈôÎ´Åöµ½ÎÄ¼şÎ²EOF£¬ÔòÒ»Ö±Ñ­»·¶ÁÈë
+            //è¯»å…¥æ¯ä¸€è¡Œï¼Œè‹¥æœªç¢°åˆ°æ–‡ä»¶å°¾EOFï¼Œåˆ™ä¸€ç›´å¾ªç¯è¯»å…¥
             while (getline(inputfile, str))
             {
-                //¼ÆÊı¶Áµ½ÁË¼¸¸öµ¥´Ê
+                //è®¡æ•°è¯»åˆ°äº†å‡ ä¸ªå•è¯
                 wordCout++;
-                //Ğ´Èëµ¥´Ê
+                //å†™å…¥å•è¯
                 write->wordA = str;
-                //´´½¨ÏÂÒ»¸öÁ´±í
+                //åˆ›å»ºä¸‹ä¸€ä¸ªé“¾è¡¨
                 create = new Words;
-                //Á´½Ó
+                //é“¾æ¥
                 write->next = create;
-                //ÒÆ¶¯writeÖ¸ÕëÖÁÏÂÒ»Á´±í
+                //ç§»åŠ¨writeæŒ‡é’ˆè‡³ä¸‹ä¸€é“¾è¡¨
                 write = create;
             }
-            cout << "µ±Ç°ÎªÆÕÍ¨Ä£Ê½£¬¹²¶ÁÈë " << wordCout << " ¸öµ¥´Ê" << endl;
+            cout << "å½“å‰ä¸ºæ™®é€šæ¨¡å¼ï¼Œå…±è¯»å…¥ " << wordCout << " ä¸ªå•è¯" << endl;
             break;
         }
         case 'D': {
             string line,strA,strB;
-            //¶ÁÈëÃ¿Ò»ĞĞ£¬ÈôÎ´Åöµ½ÎÄ¼şÎ²EOF£¬ÔòÒ»Ö±Ñ­»·¶ÁÈë
+            //è¯»å…¥æ¯ä¸€è¡Œï¼Œè‹¥æœªç¢°åˆ°æ–‡ä»¶å°¾EOFï¼Œåˆ™ä¸€ç›´å¾ªç¯è¯»å…¥
             while (getline(inputfile, line))
             {
-                //³õÊ¼»¯×Ö·û´®ÌáÈ¡Á÷²¢°´·Ö¸ô·û@ÌáÈ¡Ã¿Ò»ĞĞµÄÁ½¸öµ¥´Ê
+                //åˆå§‹åŒ–å­—ç¬¦ä¸²æå–æµå¹¶æŒ‰åˆ†éš”ç¬¦@æå–æ¯ä¸€è¡Œçš„ä¸¤ä¸ªå•è¯
                 istringstream iss(line);
                 if (!(getline(iss, strA, '@') && getline(iss, strB, '|'))) {
-                    // Èç¹û¸ñÊ½²»ÕıÈ·£¬Ôò´òÓ¡´íÎó²¢Ìø¹ı´ËĞĞ  
-                    cerr << "¸ñÊ½´íÎóµÄĞĞ: " << line << endl;
+                    // å¦‚æœæ ¼å¼ä¸æ­£ç¡®ï¼Œåˆ™æ‰“å°é”™è¯¯å¹¶è·³è¿‡æ­¤è¡Œ  
+                    cerr << "æ ¼å¼é”™è¯¯çš„è¡Œ: " << line << endl;
                     continue;
                 }
-                //¼ÆÊı¶Áµ½ÁË¼¸¸öµ¥´Ê
+                //è®¡æ•°è¯»åˆ°äº†å‡ ä¸ªå•è¯
                 wordCout++;
-                //Ğ´Èëµ¥´Ê
-                write->wordA = strA;
-                write->wordB = strB;
-                //´´½¨ÏÂÒ»¸öÁ´±í
+                //å†™å…¥å•è¯ï¼Œrefä¸ºå•è¯è¡¨æ–‡ä»¶ä¸­ç­”æ¡ˆçš„ä½ç½® fä¸ºå‰bä¸ºå, ç¨‹åºå†…wordAä¸ºé¢˜ç›®ï¼ŒwordBä¸ºç­”æ¡ˆ
+                if (ref == 'b') {
+                    write->wordA = strA;
+                    write->wordB = strB;
+                }
+                else {
+                    write->wordA = strB;
+                    write->wordB = strA;
+                }
+                //åˆ›å»ºä¸‹ä¸€ä¸ªé“¾è¡¨
                 create = new Words;
-                //Á´½Ó
+                //é“¾æ¥
                 write->next = create;
-                //ÒÆ¶¯writeÖ¸ÕëÖÁÏÂÒ»Á´±í
+                //ç§»åŠ¨writeæŒ‡é’ˆè‡³ä¸‹ä¸€é“¾è¡¨
                 write = create;
             }
-            cout << "µ±Ç°ÎªÌıĞ´Ä£Ê½£¬¹²¶ÁÈë " << wordCout << " ¸öµ¥´Ê" << endl;
+            cout << "å½“å‰ä¸ºå¬å†™æ¨¡å¼ï¼Œå…±è¯»å…¥ " << wordCout << " ä¸ªå•è¯" << endl;
             break;
         }
 
@@ -79,28 +85,28 @@ void TableUtils::getBuffertoTable() {
 
 
 }
-//##############¶ÁÈ¡ÎÄ¼ş²¢´´½¨Á´±í##############
+//##############è¯»å–æ–‡ä»¶å¹¶åˆ›å»ºé“¾è¡¨##############
 
-//##############µ¥´ÊÁ´±í¶ÁÈ¡##############
+//##############å•è¯é“¾è¡¨è¯»å–##############
 
 void TableUtils::readBufferfromTable() {
-    //¶ÁÈ¡Ö¸Õë
+    //è¯»å–æŒ‡é’ˆ
     Words* read = head;
-    //ÅĞ¶ÏÄ£Ê½
+    //åˆ¤æ–­æ¨¡å¼
     switch (mode) {
     case 'N':
-        //¼ìË÷Words±í
+        //æ£€ç´¢Wordsè¡¨
         char choice;
         while (read->next != NULL) {
-            cout << read->wordA << "ÄãÊÇ·ñ»¹¼ÇµÃ? :";
+            cout << read->wordA << "ä½ æ˜¯å¦è¿˜è®°å¾—? :";
             cin >> choice;
             switch (choice) {
             case 'y':
-                //ÏÂÒ»Á´±í£¬¿ªÊ¼Ò»¸öĞÂÑ­»·
+                //ä¸‹ä¸€é“¾è¡¨ï¼Œå¼€å§‹ä¸€ä¸ªæ–°å¾ªç¯
                 read = read->next;
                 continue;
             case 'n':
-                //´æÈë,²¢¿ªÊ¼ÏÂÒ»¸öÑ­»·
+                //å­˜å…¥,å¹¶å¼€å§‹ä¸‹ä¸€ä¸ªå¾ªç¯
                 createWFTable(read->wordA);
                 numWordsForgetten++;
                 read = read->next;
@@ -109,19 +115,19 @@ void TableUtils::readBufferfromTable() {
         }
         break;
     case 'D':
-        //¼ìË÷Words±í
+        //æ£€ç´¢Wordsè¡¨
         string answer;
         while (read->next != NULL) {
-            cout << read->wordA << "ÄãÊÇ·ñ»¹¼ÇµÃ? :";
+            cout << read->wordA << "ä½ æ˜¯å¦è¿˜è®°å¾—? :";
             getline(cin, answer);
-            //»Ø´ğÕıÈ·£¬ÏÂÒ»¸öÑ­»·
+            //å›ç­”æ­£ç¡®ï¼Œä¸‹ä¸€ä¸ªå¾ªç¯
             if (answer == read->wordB) {
                 read = read->next;
                 continue;
             }
-            //´íÎó
+            //é”™è¯¯
             else {
-                //´æÈë,²¢¿ªÊ¼ÏÂÒ»¸öÑ­»·
+                //å­˜å…¥,å¹¶å¼€å§‹ä¸‹ä¸€ä¸ªå¾ªç¯
                 createWFTable(read->wordA, read->wordB);
                 numWordsForgetten++;
                 read = read->next;
@@ -130,13 +136,13 @@ void TableUtils::readBufferfromTable() {
         }
         break;
     }
-    //¿ªÊ¼¼ì²éWordsForgettenÊÇ·ñ´æÔÚ
+    //å¼€å§‹æ£€æŸ¥WordsForgettenæ˜¯å¦å­˜åœ¨
     if (headWF == NULL) {
-        cout << "¹§Ï²Äã£¡È«²¿¹ı¹Ø£¡"<<endl;
+        cout << "æ­å–œä½ ï¼å…¨éƒ¨è¿‡å…³ï¼"<<endl;
     }
     else {
-        cout << "ÍüµôÁË " << numWordsForgetten << " ¸öµ¥´Ê"<<endl;
-        cout << "ÇëÑ¡Ôñ£ºÏÖÔÚ¸´Ï°£¨1£©£¬ÏÂÒ»´Î¸´Ï°£¨2) : ";
+        cout << "å¿˜æ‰äº† " << numWordsForgetten << " ä¸ªå•è¯"<<endl;
+        cout << "è¯·é€‰æ‹©ï¼šç°åœ¨å¤ä¹ ï¼ˆ1ï¼‰ï¼Œä¸‹ä¸€æ¬¡å¤ä¹ ï¼ˆ2) : ";
         int choiceReview;
         cin >> choiceReview;
         switch (choiceReview) {
@@ -145,7 +151,7 @@ void TableUtils::readBufferfromTable() {
             readBuffefromWFTable();
             break;
         case 2:
-            //±£´æÒÅÍüµ¥´Êµ½ÎÄ¼ş
+            //ä¿å­˜é—å¿˜å•è¯åˆ°æ–‡ä»¶
             saveBufferWFtoFile();
             exit(0);
             break;
@@ -153,37 +159,37 @@ void TableUtils::readBufferfromTable() {
     }
 
 }
-//##############µ¥´ÊÁ´±í¶ÁÈ¡##############
-/*-----------------µ¥´Ê±í²Ù×÷-----------------*/
+//##############å•è¯é“¾è¡¨è¯»å–##############
+/*-----------------å•è¯è¡¨æ“ä½œ-----------------*/
 
 
-/*----------------ÒÅÍüµ¥´Ê±í²Ù×÷---------------*/
-//##############ÒÅÍü±í´´½¨##############
+/*----------------é—å¿˜å•è¯è¡¨æ“ä½œ---------------*/
+//##############é—å¿˜è¡¨åˆ›å»º##############
 void TableUtils::createWFTable(string wordsProd) {
-    //´´½¨Ö¸Õë
+    //åˆ›å»ºæŒ‡é’ˆ
     WordsForgetten* create;
-    //Ğ´ÈëÖ¸Õë
+    //å†™å…¥æŒ‡é’ˆ
     WordsForgetten* write;
-    //Èç¹û»¹Î´½¨Á¢Á´±í£¬Ôò½¨Á¢Í·²¿Á´±í£¬²¢ÌîÈëµ¥´Ê£¬È»ºóÉèÖÃÎ²²¿Ö¸Õëend
+    //å¦‚æœè¿˜æœªå»ºç«‹é“¾è¡¨ï¼Œåˆ™å»ºç«‹å¤´éƒ¨é“¾è¡¨ï¼Œå¹¶å¡«å…¥å•è¯ï¼Œç„¶åè®¾ç½®å°¾éƒ¨æŒ‡é’ˆend
     if (headWF == NULL) {
         headWF = new WordsForgetten;
         write = headWF;
         write->wordforgettenA = wordsProd;
-        //ÉèÖÃÎ²²¿
+        //è®¾ç½®å°¾éƒ¨
         endWF = headWF;
     }
-    //Èç¹ûÒÑ¾­½¨Á¢£¬´´½¨ĞÂ±í£¬²¢ÉèÖÃĞÂµÄÎ²²¿Ö¸Õë
+    //å¦‚æœå·²ç»å»ºç«‹ï¼Œåˆ›å»ºæ–°è¡¨ï¼Œå¹¶è®¾ç½®æ–°çš„å°¾éƒ¨æŒ‡é’ˆ
     else {
-        //´´½¨ĞÂ±í
+        //åˆ›å»ºæ–°è¡¨
         create = new WordsForgetten;
-        //È¡ÏÖÓĞÎ²²¿×¼±¸Ğ´Èë
+        //å–ç°æœ‰å°¾éƒ¨å‡†å¤‡å†™å…¥
         write = endWF;
-        //Á´½Ó
+        //é“¾æ¥
         write->next = create;
-        //½øÈëĞÂ±í²¢ÌîÈëµ¥´Ê
+        //è¿›å…¥æ–°è¡¨å¹¶å¡«å…¥å•è¯
         write = write->next;
         write->wordforgettenA = wordsProd;
-        //ÉèÖÃĞÂÎ²²¿
+        //è®¾ç½®æ–°å°¾éƒ¨
         endWF = create;
     }
 
@@ -191,61 +197,61 @@ void TableUtils::createWFTable(string wordsProd) {
 }
 
 void TableUtils::createWFTable(string wordsProdA, string wordsProdB) {
-    //´´½¨Ö¸Õë
+    //åˆ›å»ºæŒ‡é’ˆ
     WordsForgetten* create;
-    //Ğ´ÈëÖ¸Õë
+    //å†™å…¥æŒ‡é’ˆ
     WordsForgetten* write;
-    //Èç¹û»¹Î´½¨Á¢Á´±í£¬Ôò½¨Á¢Í·²¿Á´±í£¬²¢ÌîÈëµ¥´Ê£¬È»ºóÉèÖÃÎ²²¿Ö¸Õëend
+    //å¦‚æœè¿˜æœªå»ºç«‹é“¾è¡¨ï¼Œåˆ™å»ºç«‹å¤´éƒ¨é“¾è¡¨ï¼Œå¹¶å¡«å…¥å•è¯ï¼Œç„¶åè®¾ç½®å°¾éƒ¨æŒ‡é’ˆend
     if (headWF == NULL) {
         headWF = new WordsForgetten;
         write = headWF;
         write->wordforgettenA = wordsProdA;
         write->wordforgettenB = wordsProdB;
-        //ÉèÖÃÎ²²¿
+        //è®¾ç½®å°¾éƒ¨
         endWF = headWF;
     }
-    //Èç¹ûÒÑ¾­½¨Á¢£¬´´½¨ĞÂ±í£¬²¢ÉèÖÃĞÂµÄÎ²²¿Ö¸Õë
+    //å¦‚æœå·²ç»å»ºç«‹ï¼Œåˆ›å»ºæ–°è¡¨ï¼Œå¹¶è®¾ç½®æ–°çš„å°¾éƒ¨æŒ‡é’ˆ
     else {
-        //´´½¨ĞÂ±í
+        //åˆ›å»ºæ–°è¡¨
         create = new WordsForgetten;
-        //È¡ÏÖÓĞÎ²²¿×¼±¸Ğ´Èë
+        //å–ç°æœ‰å°¾éƒ¨å‡†å¤‡å†™å…¥
         write = endWF;
-        //Á´½Ó
+        //é“¾æ¥
         write->next = create;
-        //½øÈëĞÂ±í²¢ÌîÈëµ¥´Ê
+        //è¿›å…¥æ–°è¡¨å¹¶å¡«å…¥å•è¯
         write = write->next;
         write->wordforgettenA = wordsProdA;
         write->wordforgettenB = wordsProdB;
-        //ÉèÖÃĞÂÎ²²¿
+        //è®¾ç½®æ–°å°¾éƒ¨
         endWF = create;
     }
 
 
 }
-//##############ÒÅÍü±í´´½¨##############
+//##############é—å¿˜è¡¨åˆ›å»º##############
 
-//##############ÒÅÍü±í¶ÁÈ¡##############
+//##############é—å¿˜è¡¨è¯»å–##############
 void TableUtils::readBuffefromWFTable() {
-    //¶ÁÈëÍ·²¿
+    //è¯»å…¥å¤´éƒ¨
     WordsForgetten* read = headWF;
-    //ÅĞ¶ÏÄ£Ê½
+    //åˆ¤æ–­æ¨¡å¼
     switch (mode) {
         case 'N':
-        //¶ÁÈ¡ÒÅÍüµ¥´Ê±í£¬Âß¼­Óëµ¥´Ê±íÀàËÆ
+        //è¯»å–é—å¿˜å•è¯è¡¨ï¼Œé€»è¾‘ä¸å•è¯è¡¨ç±»ä¼¼
         char choiceWF;
-        //¼ìË÷ÒÅÍüµ¥´Ê±í
+        //æ£€ç´¢é—å¿˜å•è¯è¡¨
         while (read != NULL) {
-                cout << "»¹¼ÇµÃ " << read->wordforgettenA << " Âğ£¿" << endl;
+                cout << "è¿˜è®°å¾— " << read->wordforgettenA << " å—ï¼Ÿ" << endl;
                 cin >> choiceWF;
                 switch (choiceWF) {
                 case 'y': 
-                    //½«´Ëµ¥´Ê´Ó±íÖĞÉ¾³ı
+                    //å°†æ­¤å•è¯ä»è¡¨ä¸­åˆ é™¤
                     deleteSpecificWordsinWFTable(read);
-                    //¶ÁÈëĞÂÍ·²¿
+                    //è¯»å…¥æ–°å¤´éƒ¨
                     read = headWF;
                     continue;
                 case 'n': 
-                    //½«´Ëµ¥´Ê½µµÍÓÅÏÈ¼¶£¬¼´ÒÆ¶¯µ½Á´±í×îºó·½
+                    //å°†æ­¤å•è¯é™ä½ä¼˜å…ˆçº§ï¼Œå³ç§»åŠ¨åˆ°é“¾è¡¨æœ€åæ–¹
                     moveWordsinWFTable(read);
                     read = headWF;
                     continue;
@@ -254,21 +260,21 @@ void TableUtils::readBuffefromWFTable() {
             }
         break;
         case 'D': 
-            //¶ÁÈ¡ÒÅÍüµ¥´Ê±í£¬Âß¼­Óëµ¥´Ê±íÀàËÆ
+            //è¯»å–é—å¿˜å•è¯è¡¨ï¼Œé€»è¾‘ä¸å•è¯è¡¨ç±»ä¼¼
             string answerWF;
-            //¼ìË÷ÒÅÍüµ¥´Ê±í
+            //æ£€ç´¢é—å¿˜å•è¯è¡¨
             while (read != NULL) {
-                cout << "»¹¼ÇµÃ " << read->wordforgettenA << " Âğ£¿" << endl;
+                cout << "è¿˜è®°å¾— " << read->wordforgettenA << " å—ï¼Ÿ" << endl;
                 getline(cin,answerWF);
                 if (answerWF == read->wordforgettenB) {
-                    //½«´Ëµ¥´Ê´Ó±íÖĞÉ¾³ı
+                    //å°†æ­¤å•è¯ä»è¡¨ä¸­åˆ é™¤
                     deleteSpecificWordsinWFTable(read);
-                    //¶ÁÈëĞÂÍ·²¿
+                    //è¯»å…¥æ–°å¤´éƒ¨
                     read = headWF;
                     continue;
                 }
                 else {
-                    //½«´Ëµ¥´Ê½µµÍÓÅÏÈ¼¶£¬¼´ÒÆ¶¯µ½Á´±í×îºó·½
+                    //å°†æ­¤å•è¯é™ä½ä¼˜å…ˆçº§ï¼Œå³ç§»åŠ¨åˆ°é“¾è¡¨æœ€åæ–¹
                     moveWordsinWFTable(read);
                     read = headWF;
                     continue;
@@ -278,35 +284,35 @@ void TableUtils::readBuffefromWFTable() {
             break;
     }
 
-    //Èç¹ûÈ«¼ÇÆğÀ´ÁË
+    //å¦‚æœå…¨è®°èµ·æ¥äº†
     if (headWF == NULL) {
-        cout << "¹§Ï²Äã£¡È«²¿¹ı¹Ø£¡"<<endl;
+        cout << "æ­å–œä½ ï¼å…¨éƒ¨è¿‡å…³ï¼"<<endl;
     }
-    //Èç¹ûÃ»ÓĞ
+    //å¦‚æœæ²¡æœ‰
     else {
-        cout << "ÍüµôÁË" << numWordsForgetten <<" ¸öµ¥´Ê"<<endl;
-        //ÏÔÊ¾ËùÓĞÍüµôµ¥´ÊµÄ´ğ°¸
+        cout << "å¿˜æ‰äº†" << numWordsForgetten <<" ä¸ªå•è¯"<<endl;
+        //æ˜¾ç¤ºæ‰€æœ‰å¿˜æ‰å•è¯çš„ç­”æ¡ˆ
         showAllAnswersinWFTable();
-        cout << "ÇëÑ¡Ôñ£º¼ÌĞø¸´Ï°£¨1£©£¬ÏÂÒ»´Î¸´Ï°£¨2) : ";
+        cout << "è¯·é€‰æ‹©ï¼šç»§ç»­å¤ä¹ ï¼ˆ1ï¼‰ï¼Œä¸‹ä¸€æ¬¡å¤ä¹ ï¼ˆ2) : ";
         int choiceReviewWF;
         cin >> choiceReviewWF;
         switch (choiceReviewWF) {
         case 1:
-            //¼ÌĞøµİ¹é´Ëº¯Êı¶ÁÈ¡£¬Ö±µ½È«²¿¼ÇÆğÀ´ÎªÖ¹
+            //ç»§ç»­é€’å½’æ­¤å‡½æ•°è¯»å–ï¼Œç›´åˆ°å…¨éƒ¨è®°èµ·æ¥ä¸ºæ­¢
             readBuffefromWFTable();
             break;
         case 2:
-            //±£´æÒÅÍüµ¥´Êµ½ÎÄ¼ş
-            //Èç¹ûÒÑ¾­ÓĞËøÎÄ¼ş£¬ÔòÏÈÉ¾³ıËøÎÄ¼ş
+            //ä¿å­˜é—å¿˜å•è¯åˆ°æ–‡ä»¶
+            //å¦‚æœå·²ç»æœ‰é”æ–‡ä»¶ï¼Œåˆ™å…ˆåˆ é™¤é”æ–‡ä»¶
             if(hasFileWF()){
                 deleteFileWF();
                 saveBufferWFtoFile();
-                cout << "±¾´Î¼ì²éÍê±Ï£¬³ÌĞòÍË³ö" << endl;
+                cout << "æœ¬æ¬¡æ£€æŸ¥å®Œæ¯•ï¼Œç¨‹åºé€€å‡º" << endl;
                 exit(0);
             }
             else {
                 saveBufferWFtoFile();
-                cout << "±¾´Î¼ì²éÍê±Ï£¬³ÌĞòÍË³ö" << endl;
+                cout << "æœ¬æ¬¡æ£€æŸ¥å®Œæ¯•ï¼Œç¨‹åºé€€å‡º" << endl;
                 exit(0);
             }
             break;
@@ -314,33 +320,33 @@ void TableUtils::readBuffefromWFTable() {
     }
 
 }
-//##############ÒÅÍü±í¶ÁÈ¡##############
+//##############é—å¿˜è¡¨è¯»å–##############
 
-//##############ÒÅÍü±íµ¥´ÊÉ¾³ı##############
+//##############é—å¿˜è¡¨å•è¯åˆ é™¤##############
 void TableUtils::deleteSpecificWordsinWFTable(WordsForgetten* wordRemember) {
-    //Èç¹ûÉæ¼°µ½±íÍ·²¿µ¥´ÊµÄÉ¾³ı²Ù×÷,Ôò¸Ä±ä±íµÄÍ·²¿Ö¸Õë
+    //å¦‚æœæ¶‰åŠåˆ°è¡¨å¤´éƒ¨å•è¯çš„åˆ é™¤æ“ä½œ,åˆ™æ”¹å˜è¡¨çš„å¤´éƒ¨æŒ‡é’ˆ
     if (wordRemember == headWF) {
         headWF = headWF->next;
         delete wordRemember;
         return ;
     }
 
-    //Èç¹ûÊÇÁ´±íÖĞµÄ·ÇÍ·²¿µ¥Ôª£¬Ôò»¹ÒªÅĞ¶ÏÊÇ·ñÊÇÎ²²¿
-    //ÒòÎªÏÖÔÚ»¹ÃÃÑ§Ë«ÏòÁ´±í£¬ËùÒÔÎªÁËÕÒµ½ÉÏÒ»¸öÁ´±í£¬ÔİÊ±ÏÈ±éÀúÕû¸öÁ´±í
+    //å¦‚æœæ˜¯é“¾è¡¨ä¸­çš„éå¤´éƒ¨å•å…ƒï¼Œåˆ™è¿˜è¦åˆ¤æ–­æ˜¯å¦æ˜¯å°¾éƒ¨
+    //å› ä¸ºç°åœ¨è¿˜å¦¹å­¦åŒå‘é“¾è¡¨ï¼Œæ‰€ä»¥ä¸ºäº†æ‰¾åˆ°ä¸Šä¸€ä¸ªé“¾è¡¨ï¼Œæš‚æ—¶å…ˆéå†æ•´ä¸ªé“¾è¡¨
     
-    //Ñ°ÕÒÉÏÒ»¸öµ¥Ôª
+    //å¯»æ‰¾ä¸Šä¸€ä¸ªå•å…ƒ
     WordsForgetten* find = headWF;
     while (find->next != wordRemember) {
         find = find->next;
     }
-    //²Ù×÷Íê³Éºófind¼´ÊÇWordRememberµÄÉÏÒ»µ¥Ôª
-    //Èç¹ûÊÇÎ²²¿
+    //æ“ä½œå®Œæˆåfindå³æ˜¯WordRememberçš„ä¸Šä¸€å•å…ƒ
+    //å¦‚æœæ˜¯å°¾éƒ¨
     if (wordRemember->next == NULL) {
         find->next = NULL;
         delete wordRemember;
         return ;
     }
-    //Èç¹ûÊÇÖĞ¼äµ¥Ôª
+    //å¦‚æœæ˜¯ä¸­é—´å•å…ƒ
     else {
         find->next = wordRemember->next;
         delete wordRemember;
@@ -348,17 +354,17 @@ void TableUtils::deleteSpecificWordsinWFTable(WordsForgetten* wordRemember) {
     }
 
 }
-//##############ÒÅÍü±íµ¥´ÊÉ¾³ı##############
+//##############é—å¿˜è¡¨å•è¯åˆ é™¤##############
 
 void TableUtils::moveWordsinWFTable(WordsForgetten* wordForgetten) {
-    //Èç¹ûµÚÒ»¸ö¾ÍÃ»¼Ç×¡£¬ÔÚÕâ¸öµ¥´Ê²»ÊÇ¸Ã±íÎ¨Ò»Ò»¸öµ¥´ÊµÄÇ°ÌáÏÂ£¬ĞèÒª¸Ä±äÒÅÍüµ¥´Ê±íÍ·²¿Ö¸Õë
+    //å¦‚æœç¬¬ä¸€ä¸ªå°±æ²¡è®°ä½ï¼Œåœ¨è¿™ä¸ªå•è¯ä¸æ˜¯è¯¥è¡¨å”¯ä¸€ä¸€ä¸ªå•è¯çš„å‰æä¸‹ï¼Œéœ€è¦æ”¹å˜é—å¿˜å•è¯è¡¨å¤´éƒ¨æŒ‡é’ˆ
     if (wordForgetten == headWF) {
-        //Èç¹û´Ëµ¥´ÊÊÇ¸Ã±íÎ¨Ò»Ò»¸öµ¥´Ê£¬Ôò·µ»Ø
+        //å¦‚æœæ­¤å•è¯æ˜¯è¯¥è¡¨å”¯ä¸€ä¸€ä¸ªå•è¯ï¼Œåˆ™è¿”å›
         if (headWF->next == NULL) return;
         else {
-            //¸Ä±äÍ·²¿Á´±íµ¥ÔªÎªÔ­À´µÄµÚ¶ş¸öµ¥Ôª
+            //æ”¹å˜å¤´éƒ¨é“¾è¡¨å•å…ƒä¸ºåŸæ¥çš„ç¬¬äºŒä¸ªå•å…ƒ
             headWF = headWF->next;
-            //Ê¹Ô­À´µÄÍ·²¿Á´±íÁ´½Óµ½×îºó£¬±äÎªÎ²²¿Á´±í
+            //ä½¿åŸæ¥çš„å¤´éƒ¨é“¾è¡¨é“¾æ¥åˆ°æœ€åï¼Œå˜ä¸ºå°¾éƒ¨é“¾è¡¨
             endWF->next = wordForgetten;
             wordForgetten->next = NULL;
             endWF = wordForgetten;
@@ -367,17 +373,17 @@ void TableUtils::moveWordsinWFTable(WordsForgetten* wordForgetten) {
         return;
     }
 
-    //Èç¹û²»ÊÇ£¬Ôòµ¥´Ê¿ÉÄÜÔÚÎ²²¿»òÖĞ¼ä£¬ÔÚÎ²²¿Ê±²»Ö´ĞĞÈÎºÎ²Ù×÷
+    //å¦‚æœä¸æ˜¯ï¼Œåˆ™å•è¯å¯èƒ½åœ¨å°¾éƒ¨æˆ–ä¸­é—´ï¼Œåœ¨å°¾éƒ¨æ—¶ä¸æ‰§è¡Œä»»ä½•æ“ä½œ
     else {
-        //Èç¹ûÔÚÖĞ¼ä£¬Ôò±äÎªÎ²²¿µ¥Ôª
-        //Ñ°ÕÒ¸Ãµ¥´ÊµÄÉÏÒ»µ¥Ôª
+        //å¦‚æœåœ¨ä¸­é—´ï¼Œåˆ™å˜ä¸ºå°¾éƒ¨å•å…ƒ
+        //å¯»æ‰¾è¯¥å•è¯çš„ä¸Šä¸€å•å…ƒ
         WordsForgetten* find = headWF;
         while (find->next != wordForgetten) {
             find = find->next;
         }
-        //Ê¹ÉÏÒ»µ¥ÔªÁ´½Óµ½¸Ãµ¥´ÊµÄÏÂÒ»µ¥Ôª
+        //ä½¿ä¸Šä¸€å•å…ƒé“¾æ¥åˆ°è¯¥å•è¯çš„ä¸‹ä¸€å•å…ƒ
         find->next = wordForgetten->next;
-        //¸Ä±äÎ²²¿
+        //æ”¹å˜å°¾éƒ¨
         endWF->next = wordForgetten;
         wordForgetten->next = NULL;
         endWF = wordForgetten;
@@ -386,15 +392,15 @@ void TableUtils::moveWordsinWFTable(WordsForgetten* wordForgetten) {
     }
 
 }
-//##############ÒÅÍü±íµ¥´ÊÒÆ¶¯##############
+//##############é—å¿˜è¡¨å•è¯ç§»åŠ¨##############
 
-//---------------ÒÅÍü±íµ¥´Ê³Ö¾Ã»¯²Ù×÷----------
+//---------------é—å¿˜è¡¨å•è¯æŒä¹…åŒ–æ“ä½œ----------
 
-//##############ÒÅÍü±íµ¥´Ê±£´æ##############
+//##############é—å¿˜è¡¨å•è¯ä¿å­˜##############
 void TableUtils::saveBufferWFtoFile() {
     ofstream outputWFFile("wordsWF.lock");
     if (outputWFFile.is_open()) {
-        //¿ªÊ¼±éÀúÒÅÍüµ¥´Ê±í²¢½«ÆäĞ´ÈëÎÄ¼ş
+        //å¼€å§‹éå†é—å¿˜å•è¯è¡¨å¹¶å°†å…¶å†™å…¥æ–‡ä»¶
         WordsForgetten* read = headWF;
         while (read != NULL) {
             if (mode == 'N') {
@@ -410,39 +416,39 @@ void TableUtils::saveBufferWFtoFile() {
         outputWFFile.close();
     }
 }
-//##############ÒÅÍü±íµ¥´Ê±£´æ##############
+//##############é—å¿˜è¡¨å•è¯ä¿å­˜##############
 
-//##############ÒÅÍü±íµ¥´Ê¶ÁÈ¡##############
+//##############é—å¿˜è¡¨å•è¯è¯»å–##############
 void TableUtils::getBuffertoWFTable() {
     switch (mode) {
     case 'N': {
         string str;
-        //¶ÁÈëÃ¿Ò»ĞĞ£¬ÈôÎ´Åöµ½ÎÄ¼şÎ²EOF£¬ÔòÒ»Ö±Ñ­»·¶ÁÈë
+        //è¯»å…¥æ¯ä¸€è¡Œï¼Œè‹¥æœªç¢°åˆ°æ–‡ä»¶å°¾EOFï¼Œåˆ™ä¸€ç›´å¾ªç¯è¯»å…¥
         while (getline(inputfile, str)){
             createWFTable(str);
-            //¼ÆÊı¶Áµ½ÁË¼¸¸öµ¥´Ê
+            //è®¡æ•°è¯»åˆ°äº†å‡ ä¸ªå•è¯
             wordCout++;
         }
-        cout << "µ±Ç°ÎªÆÕÍ¨Ä£Ê½£¬¹²¶ÁÈë " << wordCout << " ¸öµ¥´Ê" << endl;
+        cout << "å½“å‰ä¸ºæ™®é€šæ¨¡å¼ï¼Œå…±è¯»å…¥ " << wordCout << " ä¸ªå•è¯" << endl;
         break;
     }
     case 'D': {
         string line, strA, strB;
-        //¶ÁÈëÃ¿Ò»ĞĞ£¬ÈôÎ´Åöµ½ÎÄ¼şÎ²EOF£¬ÔòÒ»Ö±Ñ­»·¶ÁÈë
+        //è¯»å…¥æ¯ä¸€è¡Œï¼Œè‹¥æœªç¢°åˆ°æ–‡ä»¶å°¾EOFï¼Œåˆ™ä¸€ç›´å¾ªç¯è¯»å…¥
         while (getline(inputfile, line))
         {
-            //³õÊ¼»¯×Ö·û´®ÌáÈ¡Á÷²¢°´·Ö¸ô·û@ÌáÈ¡Ã¿Ò»ĞĞµÄÁ½¸öµ¥´Ê
+            //åˆå§‹åŒ–å­—ç¬¦ä¸²æå–æµå¹¶æŒ‰åˆ†éš”ç¬¦@æå–æ¯ä¸€è¡Œçš„ä¸¤ä¸ªå•è¯
             istringstream iss(line);
             if (!(getline(iss, strA, '@') && getline(iss, strB, '|'))) {
-                // Èç¹û¸ñÊ½²»ÕıÈ·£¬Ôò´òÓ¡´íÎó²¢Ìø¹ı´ËĞĞ  
-                cerr << "¸ñÊ½´íÎóµÄĞĞ: " << line << endl;
+                // å¦‚æœæ ¼å¼ä¸æ­£ç¡®ï¼Œåˆ™æ‰“å°é”™è¯¯å¹¶è·³è¿‡æ­¤è¡Œ  
+                cerr << "æ ¼å¼é”™è¯¯çš„è¡Œ: " << line << endl;
                 continue;
             }
             createWFTable(strA, strB);
-            //¼ÆÊı¶Áµ½ÁË¼¸¸öµ¥´Ê
+            //è®¡æ•°è¯»åˆ°äº†å‡ ä¸ªå•è¯
             wordCout++;
         }
-        cout << "µ±Ç°ÎªÌıĞ´Ä£Ê½£¬¹²¶ÁÈë " << wordCout << " ¸öµ¥´Ê" << endl;
+        cout << "å½“å‰ä¸ºå¬å†™æ¨¡å¼ï¼Œå…±è¯»å…¥ " << wordCout << " ä¸ªå•è¯" << endl;
         break;
     }
 
@@ -450,36 +456,36 @@ void TableUtils::getBuffertoWFTable() {
     inputfile.close();
 
 }
-//##############ÒÅÍü±íµ¥´Ê¶ÁÈ¡##############
+//##############é—å¿˜è¡¨å•è¯è¯»å–##############
 
-//############ÒÅÍüµ¥´ÊËøÎÄ¼şÉ¾³ı#############
+//############é—å¿˜å•è¯é”æ–‡ä»¶åˆ é™¤#############
 void TableUtils::deleteFileWF() {
     const char* ptFileWF = "wordsWF.lock";
     if (remove(ptFileWF) != 0) {
-        cerr << "ÒÆ³ıÒÅÍüµ¥´ÊËøÎÄ¼şÊ§°Ü£¬Çë³¢ÊÔÊÖ¶¯É¾³ıwordsWF.lockÎÄ¼ş";
+        cerr << "ç§»é™¤é—å¿˜å•è¯é”æ–‡ä»¶å¤±è´¥ï¼Œè¯·å°è¯•æ‰‹åŠ¨åˆ é™¤wordsWF.lockæ–‡ä»¶";
     }
 }
-//############ÒÅÍüµ¥´ÊËøÎÄ¼şÉ¾³ı#############
+//############é—å¿˜å•è¯é”æ–‡ä»¶åˆ é™¤#############
 
-//############ÒÅÍüµ¥´ÊËøÎÄ¼ş¼ì²é#############
+//############é—å¿˜å•è¯é”æ–‡ä»¶æ£€æŸ¥#############
 bool TableUtils::hasFileWF() {
     ifstream testFileWF("wordsWF.lock");
     return testFileWF.is_open();
 }
 
-//---------------ÒÅÍü±íµ¥´Ê³Ö¾Ã»¯²Ù×÷----------
+//---------------é—å¿˜è¡¨å•è¯æŒä¹…åŒ–æ“ä½œ----------
 
-//##############ÏÔÊ¾ÒÅÍüµ¥´Ê±íµÄËùÓĞ´ğ°¸##############
+//##############æ˜¾ç¤ºé—å¿˜å•è¯è¡¨çš„æ‰€æœ‰ç­”æ¡ˆ##############
 void TableUtils::showAllAnswersinWFTable() {
     system("cls");
-    cout << "ÏÖÔÚ½«Õ¹Ê¾ËùÓĞÍüµôµ¥´ÊµÄ´ğ°¸£¬Äã½«ÓĞ10ÃëÖÓµÄÊ±¼äÀ´»Ø¹ËÃ¿¸öµ¥´Ê";
+    cout << "ç°åœ¨å°†å±•ç¤ºæ‰€æœ‰å¿˜æ‰å•è¯çš„ç­”æ¡ˆï¼Œä½ å°†æœ‰10ç§’é’Ÿçš„æ—¶é—´æ¥å›é¡¾æ¯ä¸ªå•è¯";
     WordsForgetten* read = headWF;
-    cout << "´ğ°¸£º" << endl;
+    cout << "ç­”æ¡ˆï¼š" << endl;
     switch (mode) {
     case 'N':
         while (read != NULL) {
             cout << read->wordforgettenA<<endl;
-            //¼ÆÊ±
+            //è®¡æ—¶
             Sleep(1000 * 10);
             read = read->next;
         }
@@ -487,49 +493,49 @@ void TableUtils::showAllAnswersinWFTable() {
     case 'D':
         while (read != NULL) {
             cout << read->wordforgettenA << " <------> " << read->wordforgettenB << endl;
-            //¼ÆÊ±
+            //è®¡æ—¶
             Sleep(1000 * 10);
             read = read->next;
         }
         break;
     }
 
-    cout << "´ğ°¸Õ¹ÏÖÍê±Ï" << endl;
+    cout << "ç­”æ¡ˆå±•ç°å®Œæ¯•" << endl;
     system("cls");
     cin.get();
 }
 
-/*----------------ÒÅÍüµ¥´Ê±í²Ù×÷---------------*/
+/*----------------é—å¿˜å•è¯è¡¨æ“ä½œ---------------*/
 
-//##############Îö¹¹##############
+//##############ææ„##############
 TableUtils::~TableUtils() {
-    //Ê×ÏÈÎö¹¹µ¥´Ê±í
+    //é¦–å…ˆææ„å•è¯è¡¨
     Words* find = head;
     if (head != NULL) {
         while (head->next != NULL) {
-            //ÕÒµ½Î²²¿
+            //æ‰¾åˆ°å°¾éƒ¨
             while (find->next != NULL) {
                 find = find->next;
             }
-            //ÊÍ·Å
+            //é‡Šæ”¾
             delete find;
         }
-        //×îºóÉ¾³ıÍ·²¿
+        //æœ€ååˆ é™¤å¤´éƒ¨
         delete head;
     }
 
-    //ÔÙÎö¹¹ÒÅÍü´Ê±í
+    //å†ææ„é—å¿˜è¯è¡¨
     if (headWF != NULL) {
         WordsForgetten* findWF = headWF;
         while (headWF != NULL) {
-            //ÕÒµ½Î²²¿
+            //æ‰¾åˆ°å°¾éƒ¨
             while (findWF->next != NULL) {
                 findWF = findWF->next;
             }
-            //ÊÍ·Å
+            //é‡Šæ”¾
             delete findWF;
         }
-        //É¾³ıÍ·²¿
+        //åˆ é™¤å¤´éƒ¨
         delete headWF;
     }
 }

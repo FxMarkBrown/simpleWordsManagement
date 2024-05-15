@@ -26,10 +26,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="TableUtils.h">
+    <ClInclude Include="ApplicationEntry.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="ApplicationEntry.h">
+    <ClInclude Include="TableUtils.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
